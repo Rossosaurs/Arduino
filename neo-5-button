@@ -1,0 +1,256 @@
+/*
+The Circuit:
+ Most other analog buttons circuits call for the resistors to be
+ lined up in series from ground. The analog pin and each button
+ connect off one of the resistors. My cuicuit requires that the
+ resistors tie in from +5 to the buttons. The buttons all connect
+ to the analog pin which is tied to ground threw a 1k resistor as
+ seen in the diagram below. 
+        Analog pin 0
+                  |
+Ground-- 330 Ohm--|--------|--------|-------|-------|
+                  |        |        |       |       |
+                  btn1     btn2     btn3    btn4    btn5
+                  |        |        |       |       |
+                  330 Ohm  330 Ohm  330 Ohm  330 Ohm  330 Ohm
+                  |--------|--------|-------|-------|-- +5V
+           
+modified by CWCcoleman
+test 170122
+left to right
+Ground to 5v
+5      4      3     2    1
+200   253    337   508  1013
+*/
+int one();
+int two();
+int three();
+int four();
+int five();
+
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+  #include <avr/power.h>
+#endif
+
+#define PIN 6
+
+#define NUM_LEDS 16
+
+#define BRIGHTNESS 50
+
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
+int readButtons(int pin);
+
+void setup()
+{
+// Serial.begin(9600); 
+  Serial.begin(115200);
+  strip.setBrightness(BRIGHTNESS);
+  strip.begin();
+  strip.show(); // Initialize all pixels to 'off'
+  pinMode(A5, INPUT_PULLUP); // sets analog pin for input 
+}
+
+int ButtonNumber = 0;
+void loop()
+{
+   // Check for input
+   ButtonNumber = readButtons(0);
+   Serial.print("Button # ");
+  Serial.println(ButtonNumber);
+      if (ButtonNumber == 2){
+        one ();
+      }
+        if (ButtonNumber == 3){
+        two();
+      }
+       if (ButtonNumber == 4){
+        three();
+      }
+       if (ButtonNumber == 5){
+        four();
+      }
+       if (ButtonNumber == 0){
+        five();
+      }
+  }
+
+
+
+
+int readButtons(int A0pin)
+// returns the button number pressed, or zero for none pressed 
+// int pin is the analog pin number to read 
+/*Ground to 5v
+5      4      3     2    1
+104   134    190   323  1023
+*/
+{
+  int b,r = 0;  // b is button.  r is resistance
+  r=analogRead(A0pin); // get the analog value from A0
+  Serial.println(r);
+ Serial.print("   ");
+  if (r <10)
+  {
+    b=1; // buttons have not been pressed
+  }   
+else
+  if (r>800 & r< 1099)
+  {
+    b=2; // button 1 pressed
+  }     
+  else
+    if (r>300& r<360)
+    {
+      b=3; // button 3 pressed
+    }       
+    else
+      if (r>175 &  r< 210)
+      {
+        b=4; // button 4 pressed
+      }         
+      else
+        if (r>125& r<140)
+        {
+          b=5; // button 5 pressed
+        }           
+        else
+          if (r<120)
+          {
+            b=0; // button 0 pressed
+          }
+return b;
+}
+
+
+int one() {
+  int red = 255, green= 0, blue = 0, white = 10;
+int wait = 500;
+int led = 0;
+int i;
+  for ( led = 0; led < 16; led++){  
+    strip.setPixelColor(led, red, green , blue, white);
+  }//end of for loop
+    strip.show();
+    delay(wait);
+    red = red + 8;
+    green = green + 16;
+    blue = blue + 32;
+    white = white + 1;
+
+    if (red > 255) red = 0;
+    if (green > 255) green = 0;
+    if (blue > 255) blue = 0;
+    if (white > 50) white = 0;
+       
+    if (red < 0) red = 255;
+    if (green  < 0) green = 255;
+    if (blue < 0) blue = 255;
+    if (white  < 0 ) white = 50;
+}
+
+int two() {
+  int red = 0, green= 0, blue = 255, white = 10;
+int wait = 500;
+int led = 0;
+int i;
+  for ( led = 0; led < 16; led++){  
+    strip.setPixelColor(led, red, green , blue, white);
+  }//end of for loop
+    strip.show();
+    delay(wait);
+    red = red + 8;
+    green = green + 16;
+    blue = blue + 32;
+    white = white + 1;
+
+    if (red > 255) red = 0;
+    if (green > 255) green = 0;
+    if (blue > 255) blue = 0;
+    if (white > 50) white = 0;
+       
+    if (red < 0) red = 255;
+    if (green  < 0) green = 255;
+    if (blue < 0) blue = 255;
+    if (white  < 0 ) white = 50;
+}
+
+int three() {
+  int red = 0, green= 255, blue = 0, white = 10;
+int wait = 500;
+int led = 0;
+int i;
+  for ( led = 0; led < 16; led++){  
+    strip.setPixelColor(led, red, green , blue, white);
+  }//end of for loop
+    strip.show();
+    delay(wait);
+    red = red + 8;
+    green = green + 16;
+    blue = blue + 32;
+    white = white + 1;
+
+    if (red > 255) red = 0;
+    if (green > 255) green = 0;
+    if (blue > 255) blue = 0;
+    if (white > 50) white = 0;
+       
+    if (red < 0) red = 255;
+    if (green  < 0) green = 255;
+    if (blue < 0) blue = 255;
+    if (white  < 0 ) white = 50;
+}
+
+int four() {
+  int red = 223, green= 27, blue = 221, white = 10;
+int wait = 500;
+int led = 0;
+int i;
+  for ( led = 0; led < 16; led++){  
+    strip.setPixelColor(led, red, green , blue, white);
+  }//end of for loop
+    strip.show();
+    delay(wait);
+    red = red + 8;
+    green = green + 16;
+    blue = blue + 32;
+    white = white + 1;
+
+    if (red > 255) red = 0;
+    if (green > 255) green = 0;
+    if (blue > 255) blue = 0;
+    if (white > 50) white = 0;
+       
+    if (red < 0) red = 255;
+    if (green  < 0) green = 255;
+    if (blue < 0) blue = 255;
+    if (white  < 0 ) white = 50;
+}
+
+int five() {
+  int red = 27, green= 223, blue = 209, white = 10;
+int wait = 500;
+int led = 0;
+int i;
+  for ( led = 0; led < 16; led++){  
+    strip.setPixelColor(led, red, green , blue, white);
+  }//end of for loop
+    strip.show();
+    delay(wait);
+    red = red + 8;
+    green = green + 16;
+    blue = blue + 32;
+    white = white + 1;
+
+    if (red > 255) red = 0;
+    if (green > 255) green = 0;
+    if (blue > 255) blue = 0;
+    if (white > 50) white = 0;
+       
+    if (red < 0) red = 255;
+    if (green  < 0) green = 255;
+    if (blue < 0) blue = 255;
+    if (white  < 0 ) white = 50;
+}
+
